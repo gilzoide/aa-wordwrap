@@ -25,6 +25,40 @@ em relação aos quadrados dos espaços remanescentes"""
             # lê mais uma linha
             s = stream.readline ()
 
+
     def imprimeSaida (self):
         """Dá a saída do rolê"""
         print (self.words)
+
+
+    def calculaMenorEspacosRemanescentesRecursivo (self):
+        """Calcula o mínimo de espaços remanescentes, obedecendo a
+relação de recorrência achada (inclusive feito pra testá-la)"""
+        return self.OPT (len (self.words) - 1, self.tam_maximo_linha)
+
+
+    def OPT (self, palavra, pos):
+        """OPT, o trem da recorrência recursivo"""
+        # caso base
+        if palavra == -1:
+            print ('    caso base, com ', pos)
+            if pos < 0:
+                return 9999999999
+            return pos ** 2
+
+
+        # tem que pular linha pra por essa mesma palavra
+        tamanho_palavra = len (self.words[palavra])
+
+        print (self.words[palavra], 'tam =', tamanho_palavra, 'com mais', pos)
+
+        if tamanho_palavra > pos:
+            return pos ** 2 + self.OPT (palavra, self.tam_maximo_linha)
+
+        # pôs essa, daí a príxima
+        return min (
+                # não pula linha
+                self.OPT (palavra - 1, pos - tamanho_palavra - 1),
+                # pula linha
+                (pos - tamanho_palavra) ** 2 + self.OPT (palavra - 1, self.tam_maximo_linha))
+
