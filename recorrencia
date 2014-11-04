@@ -5,21 +5,22 @@ Cálculo da Relação de Recorrência do problema dado
 > @param _2: Posição atual do cursor, atualizado ao se escrever uma palavra na linha.
              Usemos a posição em relação ao final, pra não precisar fazer o
              ( tam_máximo_linha - pos ) toda hora =P
-	int OPT (int Índice da palavra, int Posição atual)
+> @param _3: Se palavra foi escrita após pular linha ou não. O default é pular linha.
+             É usado para saber se deve ser retirado uma posição devido ao espaço
+             em branco entre linhas
+	int OPT (int Índice da palavra, int Posição atual, bool Pulou = true)
 
 > caso base da recursão: índice inválido -> custo 0 (elemento neutro da adição que não zoa as conta)
-	OPT (-1, _) = 0
+	OPT (-1, _, _) = pos ^ 2
 
-> se não pode por na frente, tem que pular linha!
-	OPT (palavra, pos) = if ( pos < strlen(palavra) ) then Pula;
+> se não pode por na frente, tem que pular linha e por essa mesma palavra!
+	OPT (palavra, pos, _) = if ( pos < strlen(palavra) ) then pos ^ 2 + OPT (palavra, tam_máximo_linha);
 
-> escolha em si, normal das Programação Dinâmica
-	OPT (palavra, pos) = min { NãoPula , Pula }
+> escolha em si, normal das Programação Dinâmica: ou PULA, ou NÃO PULA
+	OPT (palavra, pos, pulou) = min {
+		OPT (palavra - 1, pos - strlen(palavra) - ( pulou ? 1 : 0 )),
+		( pos - strlen(palavra) ) ^ 2 + OPT (palavra - 1, total)
+	}
 
-> tal que:
-	Pula = OPT (palavra - 1, pos - strlen(palavra)) ^ 2
-	NãoPula = ( tam_máximo_linha - strlen(palavra) ) ^ 2 + OPT (palavra - 1, total) ^ 2
-
->	lembrando dos ^2 que ele pediu, que é por membro (já que x^2 + y^2 != (x+y)^2 =P)
->	lembrando também que a gente tem o tam_máximo_linha como membro da classe,
+>	lembrando que a gente tem o tam_máximo_linha como membro da classe,
 >		então não precisa ficar passando por parâmetro pro trem =P

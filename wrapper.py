@@ -33,32 +33,33 @@ em relação aos quadrados dos espaços remanescentes"""
 
     def calculaMenorEspacosRemanescentesRecursivo (self):
         """Calcula o mínimo de espaços remanescentes, obedecendo a
-relação de recorrência achada (inclusive feito pra testá-la)"""
+relação de recorrência achada (inclusive feito pra testá-la).
+Chama OPT com a última palavra e total de espaçoes"""
         return self.OPT (len (self.words) - 1, self.tam_maximo_linha)
 
 
-    def OPT (self, palavra, pos):
-        """OPT, o trem da recorrência recursivo"""
+    def OPT (self, palavra, pos, pulou = True):
+        """OPT, o trem da recorrência recursivo; pulou diz se pulou linha"""
         # caso base
-        if palavra == -1:
-            print ('    caso base, com ', pos)
-            if pos < 0:
-                return 9999999999
+        if palavra < 0:
             return pos ** 2
 
 
         # tem que pular linha pra por essa mesma palavra
         tamanho_palavra = len (self.words[palavra])
-
-        print (self.words[palavra], 'tam =', tamanho_palavra, 'com mais', pos)
-
         if tamanho_palavra > pos:
             return pos ** 2 + self.OPT (palavra, self.tam_maximo_linha)
+
+        # se pos na mesma linha, e não for pular denovo, tira um do próximo
+        # 'pos', já que tem que pular um espaço ;]
+        if not pulou:
+            dec = 1
+        else:
+            dec = 0
 
         # pôs essa, daí a príxima
         return min (
                 # não pula linha
-                self.OPT (palavra - 1, pos - tamanho_palavra - 1),
+                self.OPT (palavra - 1, pos - tamanho_palavra - dec, False),
                 # pula linha
                 (pos - tamanho_palavra) ** 2 + self.OPT (palavra - 1, self.tam_maximo_linha))
-
