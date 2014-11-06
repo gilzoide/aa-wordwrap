@@ -18,9 +18,11 @@ Cálculo da Relação de Recorrência do problema dado
 
 > escolha em si, normal das Programação Dinâmica: ou PULA, ou NÃO PULA
 	OPT (palavra, pos, pulou) = min {
-		OPT (palavra - 1, pos - strlen(palavra) - ( pulou ? 1 : 0 )),
-		( pos - strlen(palavra) ) ^ 2 + OPT (palavra - 1, total)
+		( pos - strlen(palavra) ) ^ 2 + OPT (palavra - 1, tam_máximo_linha),
+		OPT (palavra - 1, pos - strlen(palavra) - ( pulou ? 0 : 1 ), Pulou = false)
 	}
 
 >	lembrando que a gente tem o tam_máximo_linha como membro da classe,
 >		então não precisa ficar passando por parâmetro pro trem =P
+>	lembrando também que se pulou linha, tem que ser descontado o espaço em branco entre as duas palavras
+>		(esse peradô ternarão "pulou ? 0 : 1" mto loko)
