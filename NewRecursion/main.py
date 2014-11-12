@@ -14,19 +14,15 @@ user_input = ""
 
 # read input until EOF
 for line in sys.stdin:
-	user_input += line 
+	user_input += line
 
 # split output and separate length from words
-splitted_input = user_input.split()
-line_length = int(splitted_input[0])
-words = splitted_input[1:len(splitted_input)]
-
-# count the words' lengths
-words_size = []
-for word in words:
-	words_size.append(len(word))
+words = user_input.split()
+line_length = int(words[0])
+words.pop(0)
 
 # create a new word wrapper object
-wrapper = Wrapper(words_size, line_length)
+wrapper = Wrapper(words, line_length)
+wrapper.dynamic_programming()
+wrapper.print_word_wrapped()
 
-print(line_length, words, words_size)
