@@ -60,35 +60,42 @@ class Wrapper:
 		self.build_remaining_spaces_matrix()
 
 		# auxiliaries
-		minimum = 0
-		self.OPT = [0]
+		minimum = 10**11
+		self.OPT = [0]*(len(self.words)+1)
+		self.breaks = [0]*len(self.words)
 
 		# dynamic programming loop
-		for j in range(1, len(self.line_costs)+1):
-			cost_of_line_break = []
+		for j in range(1, len(self.words)+1):
+			minimum = 10**11
 			for i in range(1, j+1):
-				cost_of_line_break.append(self.OPT[i - 1] + self.line_costs[i-1][j-1])
-			self.OPT.append(min (cost_of_line_break))
+				cost_of_line_break_on_i = self.OPT[i-1] + self.line_costs[i-1][j-1]
+				if cost_of_line_break_on_i < minimum:
+					self.OPT[j] = cost_of_line_break_on_i
+					self.breaks[j-1] = i-1
+					minimum = cost_of_line_break_on_i
 
 		print("\nOPT: ", self.OPT)
 
 
 	def print_word_wrapped(self):
-		"""Print the words in the new lines, based on the premise that after a line break, 
-		the OPT value increases"""
-
-		for i in range(len(self.words)-1):
-
-			# if the next is bigger, we have a line break
-			if self.OPT[i] < self.OPT[i+1]:
-				end = '\n'
+		"""Print the words in the determined new lines"""
+		print(self.breaks)
+		result = []
+		i = len(self.words)-1
+		while i >= 0:
+			line = ''
+			for j in range(self.breaks[i], i+1):
+				line += self.words[j] + ' '
+			result.append(line) 
+			if (i != self.breaks[i]):
+				i = self.breaks[i]-1
 			else:
-				end = ' '
+				i -= 1
 
-			print (self.words[i], end = end)
+		for line in reversed(result):
+			print(line)
 
-		# print remainig + new line
-		print (self.words[-1])
+
 
 
 
