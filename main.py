@@ -12,3 +12,6 @@
 import sys
 from wrapper import Wrapper
 
+teste = Wrapper ()
+teste.getInput (sys.stdin)
+print (teste.calculaMenorEspacosRemanescentesRecursivo ())

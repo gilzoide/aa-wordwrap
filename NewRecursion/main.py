@@ -1,3 +1,5 @@
+#!/bin/env python3
+
 # coding: utf-8
 #
 # SCC0218 [Algoritmos Avançados e Aplicações]
